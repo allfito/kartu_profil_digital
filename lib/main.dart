@@ -3,9 +3,12 @@ import 'pages/profile_page.dart';
 import 'services/pref_service.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // wajib sebelum await di main
+  // Wajib dipanggil sebelum ada pemanggilan async/plugin di main()
+  WidgetsFlutterBinding.ensureInitialized();
+  
   final prefs = await PrefService.init();
   await prefs.increaseOpenCount();
+  
   runApp(MyApp(prefs: prefs));
 }
 
@@ -18,13 +21,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // Nilai awal dibaca dari penyimpanan, bukan hard-coded.
+  // Nilai awal langsung dibaca dari prefs yang sudah di-load di main()
   late final ValueNotifier<bool> _isDark =
       ValueNotifier(widget.prefs.isDarkMode);
 
   void _changeTheme(bool value) {
-    _isDark.value = value;            // 1. ubah tampilan sekarang
-    widget.prefs.setDarkMode(value);  // 2. simpan untuk nanti
+    _isDark.value = value;            // 1. Perbarui UI seketika
+    widget.prefs.setDarkMode(value);  // 2. Simpan ke SharedPreferences
   }
 
   @override
