@@ -8,6 +8,7 @@ void main() async {
   
   final prefs = await PrefService.init();
   await prefs.increaseOpenCount();
+  debugPrint('Isi key SharedPreferences: ${prefs.debugKeys}');
   
   runApp(MyApp(prefs: prefs));
 }
